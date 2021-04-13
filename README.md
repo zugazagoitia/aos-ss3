@@ -1,2 +1,2 @@
-# aos-ss3
+# aos-ss3 [![Java CI/CD](https://github.com/zugazagoitia/aos-ss3/actions/workflows/main.yml/badge.svg)](https://github.com/zugazagoitia/aos-ss3/actions/workflows/main.yml) [![Publish Docker image](https://github.com/zugazagoitia/aos-ss3/actions/workflows/docker.yml/badge.svg)](https://github.com/zugazagoitia/aos-ss3/actions/workflows/docker.yml)
 Subsistema_3: Gestión de la planificación diaria de los trabajos del taller, es decir, una colección de trabajos de mantenimiento que se deben realizar sobre determinados vehículos. Una vez creado un trabajo, los posibles estados serán (al menos): creado, planificado, iniciado y terminado.
