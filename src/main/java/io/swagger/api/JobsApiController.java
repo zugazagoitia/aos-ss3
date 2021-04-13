@@ -120,7 +120,7 @@ public class JobsApiController implements JobsApi {
     public ResponseEntity<Void> updateJob(@Parameter(in = ParameterIn.PATH, description = "ID of job to update", required=true, schema=@Schema()) @PathVariable("id") Long id,@Parameter(in = ParameterIn.DEFAULT, description = "Job object that needs to be added", required=true, schema=@Schema()) @Valid @RequestBody Job body) {
         String accept = request.getHeader("Accept");
         Optional<Job> opt = repository.findById(id);
-        if (!opt.isPresent()) {
+        if (opt.isPresent()) {
             Job j = opt.get();
             j.setDate(body.getDate());
             j.setDescription(body.getDescription());
