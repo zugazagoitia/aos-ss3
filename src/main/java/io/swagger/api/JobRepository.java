@@ -9,10 +9,10 @@ import java.util.Set;
 // This will be AUTO IMPLEMENTED by Spring into a Bean called userRepository
 // CRUD refers Create, Read, Update, Delete
 
-public interface JobRepository extends CrudRepository<Job, Integer> {
+public interface JobRepository extends CrudRepository<Job, Long> {
 
     List<Job> findByVehicleIn(Set<Long> vehicle);
 
-    List<Job> findByStatusIn(Set<String> status);
+    List<Job> findByStatusIn(Set<Job.StatusEnum> status);
 
 }

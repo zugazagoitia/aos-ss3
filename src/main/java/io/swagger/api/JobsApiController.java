@@ -63,7 +63,7 @@ public class JobsApiController implements JobsApi {
 
     public ResponseEntity<Void> deleteJob(@Parameter(in = ParameterIn.PATH, description = "Job id to delete", required=true, schema=@Schema()) @PathVariable("id") Long id) {
         String accept = request.getHeader("Accept");
-        repository.deleteById(Math.toIntExact(id));
+        repository.deleteById(id);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
@@ -71,7 +71,11 @@ public class JobsApiController implements JobsApi {
 )) @Valid @RequestParam(value = "status", required = true) List<String> status) {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
-            Iterable<Job> it = repository.findByStatusIn(new HashSet<String>(status));
+            HashSet<Job.StatusEnum> set = new HashSet<>();
+            for (String s : status){
+                set.add(Job.StatusEnum.fromValue(s));
+            }
+            Iterable<Job> it = repository.findByStatusIn(new HashSet<Job.StatusEnum>(set));
             ArrayList<Job> jobs = new ArrayList<>();
             it.forEach(e -> jobs.add(e));
             return new ResponseEntity<List<Job>>(jobs, HttpStatus.OK);
@@ -94,7 +98,7 @@ public class JobsApiController implements JobsApi {
     public ResponseEntity<Job> getJobById(@Parameter(in = ParameterIn.PATH, description = "ID of job to return", required=true, schema=@Schema()) @PathVariable("id") Long id) {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
-            Optional<Job> j = repository.findById(Integer.valueOf(id.intValue()));
+            Optional<Job> j = repository.findById(id);
             if(j.isPresent()) return new ResponseEntity<Job>(j.get(), HttpStatus.OK);
             else return new ResponseEntity<Job>(HttpStatus.NOT_FOUND);
         }
@@ -115,15 +119,16 @@ public class JobsApiController implements JobsApi {
 
     public ResponseEntity<Void> updateJob(@Parameter(in = ParameterIn.PATH, description = "ID of job to update", required=true, schema=@Schema()) @PathVariable("id") Long id,@Parameter(in = ParameterIn.DEFAULT, description = "Job object that needs to be added", required=true, schema=@Schema()) @Valid @RequestBody Job body) {
         String accept = request.getHeader("Accept");
-        Optional<Job> opt = repository.findById(Integer.valueOf(id.intValue()));
-        if (opt.isPresent()) return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
-        else {
+        Optional<Job> opt = repository.findById(id);
+        if (!opt.isPresent()) {
             Job j = opt.get();
             j.setDate(body.getDate());
             j.setDescription(body.getDescription());
             j.setStatus(body.getStatus());
             j.setVehicle(body.getVehicle());
             return new ResponseEntity<Void>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
         }
 
     }
