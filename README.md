@@ -4,6 +4,8 @@ Subsistema de gestión de trabajos de un taller para la asignatura de AOS
 
 ## Instalación y uso
 
+> :warning: **Actualmente solo permite el intercambio de información en formato json**: Si la cabecera _Accept_ no contiene `application/json` el api devolverá un error, está pendiente de implementación de XML en algunos endpoints.
+
 Es posible la ejecución del servidor de Spring a través de un goal de maven, pero se recomienda encarecidamente hacer
 uso del archivo docker-compose.
 
