@@ -9,116 +9,106 @@ import io.swagger.model.Job;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 import java.util.List;
-import java.util.Map;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-04-13T12:14:18.539Z[GMT]")
 @Validated
 public interface JobsApi {
 
-    @Operation(summary = "Creates a new Job", description = "", tags={ "jobs" })
-    @ApiResponses(value = { 
-        @ApiResponse(responseCode = "201", description = "OK"),
-        
-        @ApiResponse(responseCode = "400", description = "Invalid input") })
+    @Operation(summary = "Creates a new Job", description = "", tags = {"jobs"})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "OK"),
+
+            @ApiResponse(responseCode = "400", description = "Invalid input")})
     @RequestMapping(value = "/jobs",
-        consumes = { "application/json", "application/xml" }, 
-        method = RequestMethod.POST)
-    ResponseEntity<Void> addJob(@Parameter(in = ParameterIn.DEFAULT, description = "Job object that needs to be added", required=true, schema=@Schema()) @Valid @RequestBody Job body);
+            consumes = {"application/json", "application/xml"},
+            method = RequestMethod.POST)
+    ResponseEntity<Void> addJob(@Parameter(in = ParameterIn.DEFAULT, description = "Job object that needs to be added", required = true, schema = @Schema()) @Valid @RequestBody Job body);
 
 
-    @Operation(summary = "Deletes a Job", description = "", tags={ "jobs" })
-    @ApiResponses(value = { 
-        @ApiResponse(responseCode = "201", description = "OK"),
-        
-        @ApiResponse(responseCode = "400", description = "Invalid ID supplied"),
-        
-        @ApiResponse(responseCode = "404", description = "Job not found") })
+    @Operation(summary = "Deletes a Job", description = "", tags = {"jobs"})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "OK"),
+
+            @ApiResponse(responseCode = "400", description = "Invalid ID supplied"),
+
+            @ApiResponse(responseCode = "404", description = "Job not found")})
     @RequestMapping(value = "/jobs/{id}",
-        method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteJob(@Parameter(in = ParameterIn.PATH, description = "Job id to delete", required=true, schema=@Schema()) @PathVariable("id") Long id);
+            method = RequestMethod.DELETE)
+    ResponseEntity<Void> deleteJob(@Parameter(in = ParameterIn.PATH, description = "Job id to delete", required = true, schema = @Schema()) @PathVariable("id") Long id);
 
 
-    @Operation(summary = "Finds Jobs by status", description = "Multiple status values can be provided with comma separated strings", tags={ "jobs" })
-    @ApiResponses(value = { 
-        @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(array = @ArraySchema(schema = @Schema(implementation = Job.class)))),
-        
-        @ApiResponse(responseCode = "400", description = "Invalid status value") })
+    @Operation(summary = "Finds Jobs by status", description = "Multiple status values can be provided with comma separated strings", tags = {"jobs"})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(array = @ArraySchema(schema = @Schema(implementation = Job.class)))),
+
+            @ApiResponse(responseCode = "400", description = "Invalid status value")})
     @RequestMapping(value = "/jobs/findByStatus",
-        produces = { "application/xml", "application/json" }, 
-        method = RequestMethod.GET)
-    ResponseEntity<List<Job>> findJobsByStatus(@NotNull @Parameter(in = ParameterIn.QUERY, description = "Status values that need to be considered for filter" ,required=true,schema=@Schema(allowableValues={ "created", "scheduled", "started", "done" }
-)) @Valid @RequestParam(value = "status", required = true) List<String> status);
+            produces = {"application/xml", "application/json"},
+            method = RequestMethod.GET)
+    ResponseEntity<List<Job>> findJobsByStatus(@NotNull @Parameter(in = ParameterIn.QUERY, description = "Status values that need to be considered for filter", required = true, schema = @Schema(allowableValues = {"created", "scheduled", "started", "done"}
+    )) @Valid @RequestParam(value = "status", required = true) List<String> status);
 
 
-    @Operation(summary = "Finds Jobs by Vehicle", description = "Muliple vehicle IDs can be provided with comma separated strings.", tags={ "jobs" })
-    @ApiResponses(value = { 
-        @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(array = @ArraySchema(schema = @Schema(implementation = Job.class)))),
-        
-        @ApiResponse(responseCode = "400", description = "Invalid ID supplied"),
-        
-        @ApiResponse(responseCode = "404", description = "No jobs found") })
+    @Operation(summary = "Finds Jobs by Vehicle", description = "Muliple vehicle IDs can be provided with comma separated strings.", tags = {"jobs"})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(array = @ArraySchema(schema = @Schema(implementation = Job.class)))),
+
+            @ApiResponse(responseCode = "400", description = "Invalid ID supplied"),
+
+            @ApiResponse(responseCode = "404", description = "No jobs found")})
     @RequestMapping(value = "/jobs/findByVehicle",
-        produces = { "application/xml", "application/json" }, 
-        method = RequestMethod.GET)
-    ResponseEntity<List<Job>> findJobsByVehicle(@NotNull @Parameter(in = ParameterIn.QUERY, description = "Vehicle IDs to filter by" ,required=true,schema=@Schema()) @Valid @RequestParam(value = "ids", required = true) List<Integer> ids);
+            produces = {"application/xml", "application/json"},
+            method = RequestMethod.GET)
+    ResponseEntity<List<Job>> findJobsByVehicle(@NotNull @Parameter(in = ParameterIn.QUERY, description = "Vehicle IDs to filter by", required = true, schema = @Schema()) @Valid @RequestParam(value = "ids", required = true) List<Integer> ids);
 
 
-    @Operation(summary = "Find job by ID", description = "Returns a single job", tags={ "jobs" })
-    @ApiResponses(value = { 
-        @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(schema = @Schema(implementation = Job.class))),
-        
-        @ApiResponse(responseCode = "400", description = "Invalid ID supplied"),
-        
-        @ApiResponse(responseCode = "404", description = "Job not found") })
+    @Operation(summary = "Find job by ID", description = "Returns a single job", tags = {"jobs"})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(schema = @Schema(implementation = Job.class))),
+
+            @ApiResponse(responseCode = "400", description = "Invalid ID supplied"),
+
+            @ApiResponse(responseCode = "404", description = "Job not found")})
     @RequestMapping(value = "/jobs/{id}",
-        produces = { "application/xml", "application/json" }, 
-        method = RequestMethod.GET)
-    ResponseEntity<Job> getJobById(@Parameter(in = ParameterIn.PATH, description = "ID of job to return", required=true, schema=@Schema()) @PathVariable("id") Long id);
+            produces = {"application/xml", "application/json"},
+            method = RequestMethod.GET)
+    ResponseEntity<Job> getJobById(@Parameter(in = ParameterIn.PATH, description = "ID of job to return", required = true, schema = @Schema()) @PathVariable("id") Long id);
 
 
-    @Operation(summary = "Returns all jobs", description = "", tags={ "jobs" })
-    @ApiResponses(value = { 
-        @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(array = @ArraySchema(schema = @Schema(implementation = Job.class)))) })
+    @Operation(summary = "Returns all jobs", description = "", tags = {"jobs"})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(array = @ArraySchema(schema = @Schema(implementation = Job.class))))})
     @RequestMapping(value = "/jobs",
-        produces = { "application/xml", "application/json" }, 
-        method = RequestMethod.GET)
+            produces = {"application/xml", "application/json"},
+            method = RequestMethod.GET)
     ResponseEntity<List<Job>> getJobs();
 
 
-    @Operation(summary = "Update an existing job", description = "", tags={ "jobs" })
-    @ApiResponses(value = { 
-        @ApiResponse(responseCode = "201", description = "OK"),
-        
-        @ApiResponse(responseCode = "400", description = "Invalid ID supplied"),
-        
-        @ApiResponse(responseCode = "404", description = "Job not found"),
-        
-        @ApiResponse(responseCode = "405", description = "Validation exception") })
+    @Operation(summary = "Update an existing job", description = "", tags = {"jobs"})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "OK"),
+
+            @ApiResponse(responseCode = "400", description = "Invalid ID supplied"),
+
+            @ApiResponse(responseCode = "404", description = "Job not found"),
+
+            @ApiResponse(responseCode = "405", description = "Validation exception")})
     @RequestMapping(value = "/jobs/{id}",
-        consumes = { "application/json", "application/xml" }, 
-        method = RequestMethod.PUT)
-    ResponseEntity<Void> updateJob(@Parameter(in = ParameterIn.PATH, description = "ID of job to update", required=true, schema=@Schema()) @PathVariable("id") Long id, @Parameter(in = ParameterIn.DEFAULT, description = "Job object that needs to be added", required=true, schema=@Schema()) @Valid @RequestBody Job body);
+            consumes = {"application/json", "application/xml"},
+            method = RequestMethod.PUT)
+    ResponseEntity<Void> updateJob(@Parameter(in = ParameterIn.PATH, description = "ID of job to update", required = true, schema = @Schema()) @PathVariable("id") Long id, @Parameter(in = ParameterIn.DEFAULT, description = "Job object that needs to be added", required = true, schema = @Schema()) @Valid @RequestBody Job body);
 
 }
 

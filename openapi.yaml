@@ -35,11 +35,11 @@ paths:
                 type: string
           links:
             GetJobByJobId:
-             $ref: '#/components/links/GetJobByJobId'
- 
+              $ref: '#/components/links/GetJobByJobId'
+
         '400':
           description: Invalid input
-          content: {}
+          content: { }
       x-codegen-request-body-name: body
     get:
       tags:
@@ -98,19 +98,19 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Job'
-           
+
         '400':
           description: Invalid status value
-          content: {}
-      
-      
+          content: { }
+
+
   /jobs/findByVehicle:
     get:
       tags:
         - jobs
       summary: Finds Jobs by Vehicle
       description: Muliple vehicle IDs can be provided with comma separated strings.
-      
+
       operationId: findJobsByVehicle
       parameters:
         - name: ids
@@ -138,12 +138,12 @@ paths:
                 items:
                   $ref: '#/components/schemas/Job'
         '400':
-         description: Invalid ID supplied
-         content: {}                       
+          description: Invalid ID supplied
+          content: { }
         '404':
           description: No jobs found
-          content: {}
-   
+          content: { }
+
   '/jobs/{id}':
     get:
       tags:
@@ -171,10 +171,10 @@ paths:
                 $ref: '#/components/schemas/Job'
         '400':
           description: Invalid ID supplied
-          content: {}
+          content: { }
         '404':
           description: Job not found
-          content: {}
+          content: { }
     put:
       tags:
         - jobs
@@ -208,17 +208,17 @@ paths:
                 type: string
           links:
             GetJobByJobId:
-             $ref: '#/components/links/GetJobByJobId'
+              $ref: '#/components/links/GetJobByJobId'
         '400':
           description: Invalid ID supplied
-          content: {}
+          content: { }
         '404':
           description: Job not found
-          content: {}
+          content: { }
         '405':
           description: Validation exception
-          content: {}
-          
+          content: { }
+
     delete:
       tags:
         - jobs
@@ -237,10 +237,10 @@ paths:
           description: OK
         '400':
           description: Invalid ID supplied
-          content: {}
+          content: { }
         '404':
           description: Job not found
-          content: {}
+          content: { }
 components:
   schemas:
     Job:
@@ -276,21 +276,21 @@ components:
       xml:
         name: Job
   links:
-    GetJobByJobId:  
+    GetJobByJobId:
       operationId: getJobById
       parameters:
         userId: '$response.body#/id'
       description: >
         The `id` value can be used as
         the `id` parameter in `GET /jobs/{id}`.
-    PutJobByJobId:  
+    PutJobByJobId:
       operationId: updateJob
       parameters:
         userId: '$response.body#/id'
       description: >
         The `id` value can be used as
         the `id` parameter in `PUT /jobs/{id}`.
-    DeleteJobByJobId:  
+    DeleteJobByJobId:
       operationId: deleteJob
       parameters:
         userId: '$response.body#/id'
