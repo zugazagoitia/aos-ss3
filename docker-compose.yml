@@ -1,0 +1,30 @@
+version: "3"
+services:
+  spring:
+    image: albertozuga/aos-ss3
+    ports:
+      - "8080:8080"
+    networks:
+      - spring-mysql
+    depends_on:
+      - mysqldb
+
+  mysqldb:
+    image: mysql:8
+    restart: always
+    networks:
+      - spring-mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=jobs
+      - MYSQL_USER=jobservice
+      - MYSQL_PASSWORD=jobservice
+    volumes:
+      - db_data:/var/lib/mysql
+
+
+networks:
+  spring-mysql:
+
+volumes:
+  db_data:
