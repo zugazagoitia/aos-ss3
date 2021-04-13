@@ -1,0 +1,299 @@
+openapi: 3.0.1
+info:
+  title: Subsistema 3
+  description: Gestión de la planificación diaria de los trabajos del taller
+  contact:
+    email: a.rzugazagoitia@alumnos.upm.es
+  version: 1.0.0
+tags:
+  - name: jobs
+    description: Operations about Jobs
+paths:
+  /jobs:
+    post:
+      tags:
+        - jobs
+      summary: Creates a new Job
+      operationId: addJob
+      requestBody:
+        description: Job object that needs to be added
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Job'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Job'
+        required: true
+      responses:
+        '201':
+          description: OK
+          headers:
+            Location:
+              description: created job location
+              schema:
+                type: string
+          links:
+            GetJobByJobId:
+             $ref: '#/components/links/GetJobByJobId'
+ 
+        '400':
+          description: Invalid input
+          content: {}
+      x-codegen-request-body-name: body
+    get:
+      tags:
+        - jobs
+      summary: Returns all jobs
+      operationId: getJobs
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Job'
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Job'
+  /jobs/findByStatus:
+    get:
+      tags:
+        - jobs
+      summary: Finds Jobs by status
+      description: Multiple status values can be provided with comma separated strings
+      operationId: findJobsByStatus
+      parameters:
+        - name: status
+          in: query
+          description: Status values that need to be considered for filter
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: array
+            items:
+              type: string
+              default: started
+              enum:
+                - created
+                - scheduled
+                - started
+                - done
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Job'
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Job'
+           
+        '400':
+          description: Invalid status value
+          content: {}
+      
+      
+  /jobs/findByVehicle:
+    get:
+      tags:
+        - jobs
+      summary: Finds Jobs by Vehicle
+      description: Muliple vehicle IDs can be provided with comma separated strings.
+      
+      operationId: findJobsByVehicle
+      parameters:
+        - name: ids
+          in: query
+          description: Vehicle IDs to filter by
+          required: true
+          style: form
+          schema:
+            type: array
+            items:
+              type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Job'
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Job'
+        '400':
+         description: Invalid ID supplied
+         content: {}                       
+        '404':
+          description: No jobs found
+          content: {}
+   
+  '/jobs/{id}':
+    get:
+      tags:
+        - jobs
+      summary: Find job by ID
+      description: Returns a single job
+      operationId: getJobById
+      parameters:
+        - name: id
+          in: path
+          description: ID of job to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Job'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Job'
+        '400':
+          description: Invalid ID supplied
+          content: {}
+        '404':
+          description: Job not found
+          content: {}
+    put:
+      tags:
+        - jobs
+      summary: Update an existing job
+      operationId: updateJob
+      parameters:
+        - name: id
+          in: path
+          description: ID of job to update
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: Job object that needs to be added
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Job'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Job'
+        required: true
+      responses:
+        '201':
+          description: OK
+          headers:
+            Location:
+              description: updated job
+              schema:
+                type: string
+          links:
+            GetJobByJobId:
+             $ref: '#/components/links/GetJobByJobId'
+        '400':
+          description: Invalid ID supplied
+          content: {}
+        '404':
+          description: Job not found
+          content: {}
+        '405':
+          description: Validation exception
+          content: {}
+          
+    delete:
+      tags:
+        - jobs
+      summary: Deletes a Job
+      operationId: deleteJob
+      parameters:
+        - name: id
+          in: path
+          description: Job id to delete
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '201':
+          description: OK
+        '400':
+          description: Invalid ID supplied
+          content: {}
+        '404':
+          description: Job not found
+          content: {}
+components:
+  schemas:
+    Job:
+      required:
+        - id
+        - vehicleId
+        - description
+        - date
+        - status
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        vehicle:
+          type: integer
+          format: int64
+        description:
+          type: string
+          example: Replace cabin air filter
+        date:
+          type: string
+          format: date
+          example: '2017-07-21'
+        status:
+          type: string
+          description: job status in the store
+          enum:
+            - created
+            - scheduled
+            - started
+            - done
+      xml:
+        name: Job
+  links:
+    GetJobByJobId:  
+      operationId: getJobById
+      parameters:
+        userId: '$response.body#/id'
+      description: >
+        The `id` value can be used as
+        the `id` parameter in `GET /jobs/{id}`.
+    PutJobByJobId:  
+      operationId: updateJob
+      parameters:
+        userId: '$response.body#/id'
+      description: >
+        The `id` value can be used as
+        the `id` parameter in `PUT /jobs/{id}`.
+    DeleteJobByJobId:  
+      operationId: deleteJob
+      parameters:
+        userId: '$response.body#/id'
+      description: >
+        The `id` value can be used as
+        the `id` parameter in `DELETE /jobs/{id}`.    
