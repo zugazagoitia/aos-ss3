@@ -1,4 +1,4 @@
-# aos-ss3 [![Java CI/CD](https://github.com/zugazagoitia/aos-ss3/actions/workflows/main.yml/badge.svg)](https://github.com/zugazagoitia/aos-ss3/actions/workflows/main.yml) [![Publish Docker image](https://github.com/zugazagoitia/aos-ss3/actions/workflows/docker.yml/badge.svg)](https://github.com/zugazagoitia/aos-ss3/actions/workflows/docker.yml)
+# aos-ss3 [![Java CI/CD](https://github.com/zugazagoitia/aos-ss3/actions/workflows/main.yml/badge.svg)](https://github.com/zugazagoitia/aos-ss3/actions/workflows/main.yml) [![Publish Docker image](https://github.com/zugazagoitia/aos-ss3/actions/workflows/docker.yml/badge.svg)](https://github.com/zugazagoitia/aos-ss3/actions/workflows/docker.yml) [![Docker Image Size (tag)](https://img.shields.io/docker/image-size/albertozuga/aos-ss3/latest)](https://hub.docker.com/r/albertozuga/aos-ss3)
 
 Subsistema de gestión de trabajos de un taller para la asignatura de AOS
 
@@ -18,7 +18,13 @@ los [releases](https://github.com/zugazagoitia/aos-ss3/releases). Una vez descar
 docker-compose up
 ```
 
-De forma automática se configurará y ejecutará el servicio, disponible junto a su documentación en el puerto `8080`
+De forma automática se configurará y ejecutará el servicio http, disponible junto a su documentación en el puerto `8080`
+
+## Implementación
+
+La imagen de este servicio se puede encontrar en [Docker Hub](https://hub.docker.com/r/albertozuga/aos-ss3)
+
+De cara a implementar el servicio en un cluster de kubernetes se puede tomar como referencia la especificación del archivo `docker-compose.yml` de este repositorio. En el se detalla la implementación, y los parámetros requeridos por el contenedor de persistencia (MariaDB). En caso de querer realizar una base de datos distribuida se puede usar [MariaDB Galera](https://hub.kubeapps.com/charts/bitnami/mariadb-galera)
 
 ## Automatización
 
