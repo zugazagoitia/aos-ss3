@@ -18,7 +18,9 @@ los [releases](https://github.com/zugazagoitia/aos-ss3/releases). Una vez descar
 docker-compose up
 ```
 
-De forma automática se configurará y ejecutará el servicio http, disponible junto a su documentación en el puerto `8080`
+De forma automática se configurará y ejecutará el servicio http, disponible junto a su documentación en el puerto `8080`.
+
+La documentación se encuentra en la ruta `/jobs/swagger-ui/`
 
 ## Implementación
 
