@@ -20,7 +20,7 @@ docker-compose up
 
 De forma automática se configurará y ejecutará el servicio http, disponible junto a su documentación en el puerto `8080`.
 
-La documentación se encuentra en la ruta `/jobs/swagger-ui/`
+La documentación se encuentra en la ruta `/jobsdoc/`
 
 ## Implementación
 

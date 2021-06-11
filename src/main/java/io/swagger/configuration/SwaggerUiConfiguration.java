@@ -11,13 +11,13 @@ public class SwaggerUiConfiguration implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.
-                addResourceHandler("/jobs/swagger-ui/**")
+                addResourceHandler("/jobsdoc/**")
                 .addResourceLocations("classpath:/META-INF/resources/webjars/springfox-swagger-ui/")
                 .resourceChain(false);
     }
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/jobs/swagger-ui/").setViewName("forward:/jobs/swagger-ui/index.html");
+        registry.addViewController("/jobsdoc/").setViewName("forward:/jobsdoc/index.html");
     }
 }
